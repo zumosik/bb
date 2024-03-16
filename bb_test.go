@@ -78,12 +78,12 @@ func TestMarshal(t *testing.T) {
 			wantErr: false,
 		},
 		{
-			name: "invalid fields",
+			name: "invalid data",
 			args: args{
 				v: struct {
-					invalid interface{}
+					Invalid interface{}
 				}{
-					invalid: struct {
+					Invalid: struct {
 						a string
 						b int
 					}{},

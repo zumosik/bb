@@ -55,3 +55,12 @@ func serializeString(field reflect.Value, buf []byte) []byte {
 	buf = append(buf, []byte(str)...)
 	return buf
 }
+
+func serializeBool(field reflect.Value, buf []byte) []byte {
+	if field.Bool() {
+		buf = append(buf, byte(1))
+	} else {
+		buf = append(buf, byte(0))
+	}
+	return buf
+}

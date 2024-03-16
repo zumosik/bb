@@ -104,3 +104,18 @@ func deserializeString(data []byte, field reflect.Value) ([]byte, error) {
 	field.SetString(str)
 	return data[strLen:], nil
 }
+
+func deserializeBool(data []byte, field reflect.Value) []byte {
+	//if len(data) < 1 {
+	//	return nil, ErrNotEnoughData
+	//} i think this have no reason
+
+	if data[0] == 1 {
+		field.SetBool(true)
+	} else {
+
+		field.SetBool(true)
+	}
+
+	return data[1:]
+}

@@ -2,6 +2,7 @@ package bb
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -10,7 +11,7 @@ var (
 	ErrInvalidType = errors.New("invalid type")
 )
 
-// Marshal serializes struct, where fields can be int16, int32, int64, uint16, uint32, uint64, float32, float64, string.
+// Marshal serializes struct, where fields can be int16, int32, int64, uint16, uint32, uint64, float32, float64, string, bool.
 //
 // Order of fields is important, also fields need to be exported
 func Marshal(v interface{}) (buf []byte, err error) {
@@ -23,6 +24,8 @@ func Marshal(v interface{}) (buf []byte, err error) {
 	val := reflect.ValueOf(v)
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
+		fmt.Println(field.Kind())
+
 		if !field.CanInterface() {
 			continue
 		}
@@ -36,6 +39,8 @@ func Marshal(v interface{}) (buf []byte, err error) {
 			buf = serializeFloat(field, buf)
 		case reflect.String:
 			buf = serializeString(field, buf)
+		case reflect.Bool:
+			buf = serializeBool(field, buf)
 		default:
 			return nil, ErrInvalidType
 		}
@@ -44,7 +49,7 @@ func Marshal(v interface{}) (buf []byte, err error) {
 	return buf, nil
 }
 
-// Unmarshal deserializes struct, where fields can be int16, int32, int64, uint16, uint32, uint64, float32, float64, string.
+// Unmarshal deserializes struct, where fields can be int16, int32, int64, uint16, uint32, uint64, float32, float64, string, bool.
 //
 // Order of fields is important
 func Unmarshal(data []byte, v any) (err error) {
@@ -76,6 +81,8 @@ func Unmarshal(data []byte, v any) (err error) {
 			data, err = deserializeFloat(data, field)
 		case reflect.String:
 			data, err = deserializeString(data, field)
+		case reflect.Bool:
+			data = deserializeBool(data, field)
 		default:
 			return ErrInvalidType
 		}
