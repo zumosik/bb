@@ -2,7 +2,6 @@ package bb
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -24,7 +23,6 @@ func Marshal(v interface{}) (buf []byte, err error) {
 	val := reflect.ValueOf(v)
 	for i := 0; i < val.NumField(); i++ {
 		field := val.Field(i)
-		fmt.Println(field.Kind())
 
 		if !field.CanInterface() {
 			continue
