@@ -2,7 +2,6 @@ package bb
 
 import (
 	"errors"
-	"fmt"
 	"reflect"
 )
 
@@ -17,7 +16,7 @@ var (
 func Marshal(v interface{}) (buf []byte, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = fmt.Errorf("%w: %v", err, r)
+			err = ErrInvalidData
 		}
 	}()
 
@@ -51,7 +50,7 @@ func Marshal(v interface{}) (buf []byte, err error) {
 func Unmarshal(data []byte, v any) (err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = ErrInvalidData // unexported field
+			err = ErrInvalidData
 		}
 	}()
 
