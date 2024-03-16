@@ -2,6 +2,7 @@ package bb
 
 import (
 	"errors"
+	"fmt"
 	"reflect"
 )
 
@@ -16,7 +17,7 @@ var (
 func Marshal(v interface{}) (buf []byte, err error) {
 	defer func() {
 		if r := recover(); r != nil {
-			err = ErrInvalidData
+			err = fmt.Errorf("%w: %v", err, r)
 		}
 	}()
 
